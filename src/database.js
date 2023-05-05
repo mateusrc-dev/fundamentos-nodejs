@@ -32,4 +32,22 @@ export class Database {
 
     return data;
   }
+
+  update(table, id, data) {
+    const rowIndex = this.#database[table].findIndex(row => row.id === id) // we let's go through each register of table find user with id equal the parameter - 'findIndex' returns the index (position) of the found record
+
+    if (rowIndex > -1) {
+      this.#database[table][rowIndex] = { id, ...data } // we let's insert the new user data in index row found with method 'findIndex'
+      this.#persist()
+    }
+  }
+
+  delete(table, id) {
+    const rowIndex = this.#database[table].findIndex(row => row.id === id) // we let's go through each register of table find user with id equal the parameter - 'findIndex' returns the index (position) of the found record
+
+    if (rowIndex > -1) {
+      this.#database[table].splice(rowIndex, 1)
+      this.#persist()
+    }
+  }
 }

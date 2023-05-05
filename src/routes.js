@@ -28,10 +28,29 @@ export const routes = [
     }
   },
   {
+    method: 'PUT', // for update all data user
+    path: buildRoutePath('/users/:id'), // here the parameter have that to be dynamic - we let's identify the parameter 'id' with two point
+    handler: (req, res) => {
+      const id = req.params.id
+      const { name, email } = req.body
+
+      database.update('users', id, {
+        name,
+        email,
+      })
+
+      return res.writeHead(204).end()
+    },
+  },
+  {
     method: 'DELETE',
     path: buildRoutePath('/users/:id'), // here the parameter have that to be dynamic - we let's identify the parameter 'id' with two point
     handler: (req, res) => {
-      return res.end()
+      const id = req.params.id
+
+      database.delete('users', id)
+
+      return res.writeHead(204).end()
     },
   },
 ]

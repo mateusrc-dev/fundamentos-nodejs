@@ -12,10 +12,14 @@ const server = http.createServer(async (req, res) => { // in 'req' we have all i
   await json(req, res)
   
   const route = routes.find(route => { // 'find' to iterate
-    return route.method === method && route.path === url
+    return route.method === method && route.path.test(url)
   })
 
   if (route) {
+    const routeParams = req.url.match(route.path) // here this method (match) return data that the regex find in route
+
+    req.params = { ...routeParams.groups }
+    
     return route.handler(req, res) // let's we called the function that are in route with the parameter
   }
 
