@@ -15,8 +15,16 @@ export class Database {
     fs.writeFile(databasePath, JSON.stringify(this.#database)) // the method 'fs' accept just text
   }
 
-  select(table) {
-    const data = this.#database[table] ?? [] // we let's find if exist a key inside database with the name of parameter
+  select(table, search) {
+    let data = this.#database[table] ?? [] // we let's find if exist a key inside database with the name of parameter
+
+    if (search) {
+      data = data.filter(row => {
+        return Object.entries(search).some(([key, value]) => {
+          return row[key].toLowerCase().includes(value.toLowerCase())
+        }) // transform object in array for to be possible doing iteration with 'key' and 'value' in positions of array
+      })
+    }
 
     return data
   }

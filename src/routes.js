@@ -9,9 +9,12 @@ export const routes = [
     method: 'GET',
     path: buildRoutePath('/users'),
     handler: (req, res) => {
-      console.log(req.query)
+      const { search } = req.query
 
-      const users = database.select('users') // we let's use a methods of class that we create
+      const users = database.select('users', search ? {
+        name: search,
+        email: search,
+      } : null) // we let's use a methods of class that we create
       return res.end(JSON.stringify(users)) // we don't can send this response how a array - that's why we let's use the 'json = javascript object notation'
     }
   },
